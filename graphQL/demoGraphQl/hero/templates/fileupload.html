@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+</head>
+<body>
+    <h1>You can Upload file here</h1>
+    <form enctype="multipart/form-data" method="post"> 
+      {% csrf_token %}
+      <input type="file" required  name="document"/> 
+      <input type="submit" id="myBtn" value="Submit" onclick="" />
+  </form>
+
+  <div class='progress-wrapper'>
+    <div id='progress-bar' class='progress-bar' style="background-color: #68a9ef; width: 0%;">&nbsp;</div>
+  </div>
+  <div id="progress-bar-message">Waiting for progress to start...</div>
+  <script src="{% static 'celery_progress/celery_progress.js' %}"></script>
+
+  <script>
+    
+    function displayMessage(){
+      var progressUrl = "{% url 'celery_progress:task_status' task_id %}";
+      CeleryProgressBar.initProgressBar(progressUrl);
+	    }
+      var btn = document.getElementById("myBtn");
+      btn.addEventListener("click", displayMessage());
+
+</script>
+</body>
+</html>
